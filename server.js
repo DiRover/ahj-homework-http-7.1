@@ -10,16 +10,16 @@ const port = process.env.PORT || 7070;
 
 let tickets = [{
     "id": "1",
-    "name": "Name 1",
+    "name": "Asshole",
     "status": "false",
-    "description": "Name 1 test",
+    "description": "Maybe you a asshole",
     "created": "21.10.20 22:25"
   },
   {
     "id": "2",
-    "name": "Name 2",
+    "name": "Redneck",
     "status": "true",
-    "description": "Name 2 test",
+    "description": "Pathetic redneck",
     "created": "21.10.20 22:255"
 }];
 
@@ -81,5 +81,51 @@ app.use(async (ctx, next) => {
     }*/
 });
 
+app.use(async (ctx) => { 
+    const { method } = ctx.request.query;
+    const reqType = ctx.request.method;
+    console.log(method);
+    console.log(reqType);
+  
+    if(reqType === 'GET' && method === 'allTicket') {
+      ctx.response.body = tickets;
+      return;
+    }
+  
+    if (reqType === 'POST') {
+      tickets.push(ctx.request.body);
+      ctx.response.body = 'New ticket was added!';
+      return
+    }
+  
+    if (reqType === 'PATCH') {
+      const { id, method, name, description, status } = ctx.request.body;
+      
+      if (method === 'deleteTicket') {
+        tickets = tickets.filter((ticket) => ticket.id !== id);
+        ctx.response.body = 'Ticket was deleted!';
+        return
+      }
+  
+      if (method === 'editTicket') {
+        const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
+        filtered.name = name;
+        filtered.description = description;      
+        
+        ctx.response.body = {text: 'Ticket was edited!', data: filtered};
+        return
+      }
+  
+      if (method === 'checkTicket') {
+        const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
+        
+        filtered.status = JSON.parse(status);
+        
+        ctx.response.body = filtered.status;
+        return
+      }     
+    }
+  });
+  
 
 const server = http.createServer(app.callback()).listen(port);
