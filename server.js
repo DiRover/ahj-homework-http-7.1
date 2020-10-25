@@ -11,16 +11,16 @@ const port = process.env.PORT || 7070;
 let tickets = [{
     "id": "1",
     "name": "Asshole",
-    "status": "false",
+    "status": false,
     "description": "Maybe you a asshole",
-    "created": "21.10.20 22:25"
+    "created": "21.10.2020 22:25"
   },
   {
     "id": "2",
     "name": "Redneck",
-    "status": "true",
+    "status": true,
     "description": "Pathetic redneck",
-    "created": "21.10.20 22:255"
+    "created": "21.10.2020 22:25"
 }];
 
 app.use(koaBody({
@@ -84,8 +84,7 @@ app.use(async (ctx, next) => {
 app.use(async (ctx) => { 
     const { method } = ctx.request.query;
     const reqType = ctx.request.method;
-    console.log(method);
-    console.log(reqType);
+
   
     if(reqType === 'GET' && method === 'allTicket') {
       ctx.response.body = tickets;
@@ -93,8 +92,18 @@ app.use(async (ctx) => {
     }
   
     if (reqType === 'POST') {
-      tickets.push(ctx.request.body);
+      //tickets.push(ctx.request.body);
+      const reqBody = {};
+      const date = new Date();
+      const time = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+      reqBody['id'] = uuid.v1();
+      reqBody['name'] = ctx.request.body.name;
+      reqBody['status'] = false;
+      reqBody['description'] = ctx.request.body.description;
+      reqBody['created'] = time;
+      tickets.push(reqBody);
       ctx.response.body = 'New ticket was added!';
+      ctx.response.body = tickets;
       return
     }
   
