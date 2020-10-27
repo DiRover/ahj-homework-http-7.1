@@ -10,16 +10,16 @@ const port = process.env.PORT || 7070;
 
 let tickets = [{
     "id": "1",
-    "name": "Asshole",
+    "name": "Test ticket 1",
     "status": false,
-    "description": "Maybe you a asshole",
+    "description": "This is test ticket 1 description",
     "created": "21.10.2020 22:25"
   },
   {
     "id": "2",
-    "name": "Redneck",
+    "name": "Test ticket 2",
     "status": false,
-    "description": "Pathetic redneck",
+    "description": "This is test ticket 2 description",
     "created": "21.10.2020 22:25"
 }];
 
