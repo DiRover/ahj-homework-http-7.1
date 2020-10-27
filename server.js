@@ -18,7 +18,7 @@ let tickets = [{
   {
     "id": "2",
     "name": "Redneck",
-    "status": true,
+    "status": false,
     "description": "Pathetic redneck",
     "created": "21.10.2020 22:25"
 }];
@@ -104,37 +104,55 @@ app.use(async (ctx) => {
       tickets.push(reqBody);
       ctx.response.body = 'New ticket was added!';
       ctx.response.body = tickets;
+      console.log(tickets);
       return
     }
   
     if (reqType === 'PATCH') {
+      //при помощи деструктуризации записываем в переменные пришедший запрос
       const { id, method, name, description, status } = ctx.request.body;
-      
+
       if (method === 'deleteTicket') {
         tickets = tickets.filter((ticket) => ticket.id !== id);
         ctx.response.body = 'Ticket was deleted!';
+        ctx.response.body = tickets;
         return
       }
   
       if (method === 'editTicket') {
-        const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
-        filtered.name = name;
-        filtered.description = description;      
-        
-        ctx.response.body = {text: 'Ticket was edited!', data: filtered};
+        //const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
+        //filtered.name = name;
+        //filtered.description = description;
+        tickets = tickets.map((ticket) => {
+          if (ticket.id === id) {
+            ticket.name = name;
+            ticket.description = description;
+          };
+          return ticket;
+        })      
+        ctx.response.body = tickets;
         return
       }
   
       if (method === 'checkTicket') {
-        const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
+        tickets = tickets.map((ticket) => {
+          if (ticket.id === id) {
+            ticket.status = status;
+          };
+          return ticket;
+        })      
+        ctx.response.body = tickets;
+        return
         
-        filtered.status = JSON.parse(status);
         
-        ctx.response.body = filtered.status;
+        //const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
+        
+        //filtered.status = JSON.parse(status);
+        
+        //ctx.response.body = filtered.status;
         return
       }     
     }
   });
   
-
 const server = http.createServer(app.callback()).listen(port);
