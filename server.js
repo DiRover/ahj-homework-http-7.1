@@ -69,18 +69,7 @@ app.use(async (ctx, next) => {
 
     };
 
-    
-    /*ctx.body = tickets;
-    const { method } = ctx.request.querystring;
-    switch (method) {
-        case 'allTickets':
-            ctx.response.body = tickets;
-            return;
-        // TODO: обработка остальных методов
-        default:
-            ctx.response.status = 404;
-            return;
-    }*/
+
 });
 
 app.use(async (ctx) => { 
@@ -94,7 +83,6 @@ app.use(async (ctx) => {
     }
   
     if (reqType === 'POST') {
-      //tickets.push(ctx.request.body);
       const reqBody = {};
       const date = new Date();
       const time = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
@@ -122,9 +110,6 @@ app.use(async (ctx) => {
       }
   
       if (method === 'editTicket') {
-        //const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
-        //filtered.name = name;
-        //filtered.description = description;
         tickets = tickets.map((ticket) => {
           if (ticket.id === id) {
             ticket.name = name;
@@ -144,14 +129,6 @@ app.use(async (ctx) => {
           return ticket;
         })      
         ctx.response.body = tickets;
-        return
-        
-        
-        //const filtered = tickets.filter((ticket) => ticket.id === id)[0];      
-        
-        //filtered.status = JSON.parse(status);
-        
-        //ctx.response.body = filtered.status;
         return
       }     
     }
