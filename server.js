@@ -64,9 +64,7 @@ app.use(async (ctx, next) => {
 
     };
 
-
-    
-
+ 
     
     /*ctx.body = tickets;
     const { method } = ctx.request.querystring;
