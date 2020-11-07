@@ -39,6 +39,11 @@ app.use(async (ctx, next) => {
 
     const headers = { 'Access-Control-Allow-Origin': '*' };
 
+    //добавил чтобы сервер работал на herocu
+    if (ctx.request.method === 'OPTIONS') {
+        ctx.response.set({...headers});
+    }
+
     if (ctx.request.method !== 'OPTIONS') {
         ctx.response.body = tickets;
         ctx.response.set({...headers});
